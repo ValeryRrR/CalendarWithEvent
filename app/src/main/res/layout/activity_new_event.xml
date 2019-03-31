@@ -7,7 +7,7 @@
     android:theme="@style/Theme.App.EditText">
 
     <EditText
-        android:id="@+id/etHeader"
+        android:id="@+id/et_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
@@ -22,7 +22,7 @@
     </EditText>
 
     <EditText
-        android:id="@+id/etMainText"
+        android:id="@+id/et_main_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
@@ -32,7 +32,7 @@
     </EditText>
 
     <EditText
-        android:id="@+id/etDate"
+        android:id="@+id/et_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
