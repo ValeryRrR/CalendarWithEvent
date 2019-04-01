@@ -24,12 +24,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
-        final AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "event").build();
-
 
         CalendarView calendarView = (CalendarView) findViewById(R.id.calendar_view);
-
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
