@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#518AFF</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorFab">#FFCD00</color>
+    <color name="colorCurentDay">#F00A6B</color>
 </resources>

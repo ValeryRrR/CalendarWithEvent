@@ -1,20 +1,17 @@
 package com.example.myapplication;
 
-import android.app.Activity;
-import android.arch.persistence.room.Room;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.myapplication.model.database.App;
-import com.example.myapplication.model.database.AppDatabase;
 import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
 
@@ -58,8 +55,6 @@ public class NewEventActivity extends AppCompatActivity {
                 eventTask.execute(event);
 
                 //startActivity(intent);
-
-
             }
         });
     }
@@ -70,7 +65,7 @@ public class NewEventActivity extends AppCompatActivity {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             if (integer == RESULT_OK) {
-                Toast.makeText(NewEventActivity.this, "Событие создано", Toast.LENGTH_SHORT);
+                Toast.makeText(NewEventActivity.this, "Событие создано", Toast.LENGTH_SHORT).show();
             }
         }
 

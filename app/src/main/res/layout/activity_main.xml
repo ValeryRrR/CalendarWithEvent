@@ -40,14 +40,20 @@
         <android.support.v7.widget.CardView
             android:id="@+id/calendar_card_view"
             android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_height="270dp"
             android:layout_marginTop="100dp"
-            card_view:cardCornerRadius="4dp">
+            card_view:cardCornerRadius="8dp">
 
-            <CalendarView
-                android:id="@+id/calendar_view"
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/calendarView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                app:mcv_showOtherDates="all"
+                app:mcv_selectionColor="#00F"
+                />
+
 
         </android.support.v7.widget.CardView>
 
@@ -57,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="200dp"
             android:layout_marginTop="70dp"
-            android:src="@drawable/ic_fab"
+            app:srcCompat="@drawable/ic_fab"
             app:backgroundTint="@color/colorFab" />
 
     </RelativeLayout>
