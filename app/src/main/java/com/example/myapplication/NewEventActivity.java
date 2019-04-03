@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,11 +30,12 @@ public class NewEventActivity extends AppCompatActivity {
         etHeader = (EditText) findViewById(R.id.et_header);
         etMainText = (EditText) findViewById(R.id.et_main_text);
         etDate = (EditText) findViewById(R.id.et_date);
+        etDate.setText(getIntent().getStringExtra("SELECTDAY"));
 
 
 
         /*Showing keybord when editText focused*/
-        InputMethodManager imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        final InputMethodManager imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
 
@@ -51,34 +53,15 @@ public class NewEventActivity extends AppCompatActivity {
                 event.description = description;
                 event.date = date;
 
-                EventTask eventTask = new EventTask();
-                eventTask.execute(event);
+                imgr.hideSoftInputFromWindow(NewEventActivity.this.getCurrentFocus().getWindowToken(), 0);
 
-                //startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("Event", event);
+                setResult(RESULT_OK, intent);
+                finish();
+
             }
         });
     }
 
-    class EventTask extends AsyncTask<Event, Void, Integer> {
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
-            if (integer == RESULT_OK) {
-                Toast.makeText(NewEventActivity.this, "Событие создано", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        protected Integer doInBackground(Event... events) {
-            EventDao dao = App.getInstance().getEventDatabase();
-            if (events != null && events.length > 0) {
-                dao.insertAll(events);
-            }
-
-            return RESULT_OK;
-        }
-
-        private static final int RESULT_OK = 233;
-    }
 }

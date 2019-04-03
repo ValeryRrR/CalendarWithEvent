@@ -3,4 +3,5 @@
     <string name="header">Header</string>
     <string name="main_text">Main text</string>
     <string name="date">Date</string>
+    <string name="events">EVENTS</string>
 </resources>

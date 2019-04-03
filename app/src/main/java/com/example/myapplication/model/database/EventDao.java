@@ -23,7 +23,7 @@ public interface EventDao {
 //    boolean eventIsExists();
 
     @Query("SELECT EXISTS(SELECT * FROM event e WHERE (:date)=e.date)")
-    boolean eventIsExists2(String date);
+    boolean eventIsExists(String date);
    /*
    @Query("SELECT * FROM event WHERE first_name LIKE :first AND " +
             "last_name LIKE :last LIMIT 1")

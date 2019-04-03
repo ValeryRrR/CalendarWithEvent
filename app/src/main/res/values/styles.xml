@@ -13,6 +13,7 @@
         <item name="colorControlActivated">#c5c5c5</item>
         <item name="colorControlHighlight">#c5c5c5</item>
         <item name="android:textColorHint">#FFFFFF</item>
+        <item name="android:textColor">@color/textColor</item>
     </style>
 
 </resources>

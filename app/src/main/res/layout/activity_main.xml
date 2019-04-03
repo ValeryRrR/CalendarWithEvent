@@ -66,6 +66,25 @@
             app:srcCompat="@drawable/ic_fab"
             app:backgroundTint="@color/colorFab" />
 
+        <TextView
+            android:id="@+id/text_view_events"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="26dp"
+            android:text="@string/events"
+            android:textColor="#8A8A8A"
+            android:layout_below="@id/calendar_card_view"/>
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="26dp"
+            android:textColor="#8A8A8A"
+            android:layout_below="@id/text_view_events"/>
+
     </RelativeLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>
