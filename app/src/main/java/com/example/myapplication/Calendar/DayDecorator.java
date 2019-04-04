@@ -8,12 +8,12 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
-public class EventDecorator implements DayViewDecorator {
+public class DayDecorator implements DayViewDecorator {
 
     private final int color;
     private final CalendarDay today;
 
-    public EventDecorator(int color, CalendarDay today) {
+    public DayDecorator(int color, CalendarDay today) {
         this.color = color;
         this.today = today;
     }

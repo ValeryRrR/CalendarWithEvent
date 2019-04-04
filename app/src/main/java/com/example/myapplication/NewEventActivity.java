@@ -29,10 +29,10 @@ public class NewEventActivity extends AppCompatActivity {
 
         etHeader = (EditText) findViewById(R.id.et_header);
         etMainText = (EditText) findViewById(R.id.et_main_text);
+
         etDate = (EditText) findViewById(R.id.et_date);
         etDate.setText(getIntent().getStringExtra("SELECTDAY"));
-
-
+        etDate.setEnabled(false);
 
         /*Showing keybord when editText focused*/
         final InputMethodManager imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);

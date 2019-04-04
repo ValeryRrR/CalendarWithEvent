@@ -1,27 +1,27 @@
 package com.example.myapplication;
 
-import android.arch.persistence.room.Dao;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.Calendar.EventDecorator;
+import com.example.myapplication.Calendar.DayDecorator;
+import com.example.myapplication.Calendar.GroupOfDaysDecorator;
 import com.example.myapplication.model.database.App;
-import com.example.myapplication.model.database.AppDatabase;
 import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -39,10 +39,19 @@ public class MainActivity extends AppCompatActivity {
         calendarView.setDateSelected(CalendarDay.today(), true);
         calendarView.setTopbarVisible(false);
 
+        DayDecorator dayDecorator = new DayDecorator(Color.parseColor("#F2C200"), CalendarDay.today());
+        calendarView.addDecorator(dayDecorator);
+        calendarView.invalidateDecorators();
 
-        // EventDecorator eventDecorator = new EventDecorator(Color.parseColor(String.valueOf(R.color.colorCurentDay)), CalendarDay.today());
-        EventDecorator eventDecorator = new EventDecorator(Color.parseColor("#F00A6B"), CalendarDay.today());
-        calendarView.addDecorator(eventDecorator);
+        HashSet<CalendarDay> calendarDaysList = new HashSet<>();
+
+       CalendarDay two =   CalendarDay.from(2019, 4,9);
+       CalendarDay three =   CalendarDay.from(2019, 4,11);
+       calendarDaysList.add(two);
+       calendarDaysList.add(three);
+
+        GroupOfDaysDecorator groupOfDaysDecorator = new GroupOfDaysDecorator(Color.parseColor("#F00A6B"), calendarDaysList );
+        calendarView.addDecorator(groupOfDaysDecorator);
         calendarView.invalidateDecorators();
 
 
@@ -51,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), NewEventActivity.class);
-                intent.putExtra("SELECTDAY", calendarView.getSelectedDate().toString());
+                intent.putExtra("SELECTDAY", calendarView.getSelectedDate().getDate().toString());
                 startActivityForResult(intent, 1);
             }
         });
