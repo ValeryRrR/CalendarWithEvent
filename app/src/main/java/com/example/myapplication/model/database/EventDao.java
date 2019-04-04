@@ -19,16 +19,9 @@ public interface EventDao {
     @Query("SELECT * FROM event WHERE uid IN (:eventIds)")
     List<Event> loadAllByIds(int[] eventIds);
 
-//    @Query("SELECT * FROM event d WHERE EXISTS (SELECT * FROM employees e WHERE d.department_id = e.department_id);")
-//    boolean eventIsExists();
-
     @Query("SELECT EXISTS(SELECT * FROM event e WHERE (:date)=e.date)")
     boolean eventIsExists(String date);
-   /*
-   @Query("SELECT * FROM event WHERE first_name LIKE :first AND " +
-            "last_name LIKE :last LIMIT 1")
-    User findByName(String first, String last);
-*/
+
     @Insert
     void insertAll(Event... events);
 
@@ -37,6 +30,18 @@ public interface EventDao {
 
     @Update
     void updateEvent(Event... users);
+
+    /*@Query("SELECT * FROM event d WHERE EXISTS (SELECT * FROM employees e WHERE d.department_id = e.department_id);")
+    boolean eventIsExists();*/
+
+   /* @Query("SELECT * FROM event WHERE (:date) + '%' =date ")
+      List<Event> getEventsCurrentMonth(String date);*/
+
+    /*
+   @Query("SELECT * FROM event WHERE first_name LIKE :first AND " +
+            "last_name LIKE :last LIMIT 1")
+    User findByName(String first, String last);
+*/
 
 }
 

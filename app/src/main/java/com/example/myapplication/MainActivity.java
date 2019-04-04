@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +18,18 @@ import com.example.myapplication.model.entity.Event;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    MaterialCalendarView calendarView;
+    UpdateColorTask updateColorTask;
+    NewEventTask newEventTask;
+    DayDecorator dayDecorator;
+    GroupOfDaysDecorator groupOfDaysDecorator;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,29 +37,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
-
-        final MaterialCalendarView calendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+        calendarView = findViewById(R.id.calendarView);
 
         calendarView.setDateSelected(CalendarDay.today(), true);
         calendarView.setTopbarVisible(false);
 
-        DayDecorator dayDecorator = new DayDecorator(Color.parseColor("#F2C200"), CalendarDay.today());
+        updateColorTask = new UpdateColorTask();
+        updateColorTask.execute();
+
+        dayDecorator = new DayDecorator(Color.parseColor("#F2C200"), CalendarDay.today());
         calendarView.addDecorator(dayDecorator);
         calendarView.invalidateDecorators();
 
-        HashSet<CalendarDay> calendarDaysList = new HashSet<>();
-
-       CalendarDay two =   CalendarDay.from(2019, 4,9);
-       CalendarDay three =   CalendarDay.from(2019, 4,11);
-       calendarDaysList.add(two);
-       calendarDaysList.add(three);
-
-        GroupOfDaysDecorator groupOfDaysDecorator = new GroupOfDaysDecorator(Color.parseColor("#F00A6B"), calendarDaysList );
-        calendarView.addDecorator(groupOfDaysDecorator);
-        calendarView.invalidateDecorators();
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         Event event = (Event) data.getSerializableExtra("Event");
-        EventTask eventTask = new EventTask();
-        eventTask.execute(event);
+        newEventTask = new NewEventTask();
+        newEventTask.execute(event);
+        Toast.makeText(MainActivity.this, "Событие создано", Toast.LENGTH_SHORT).show();
+      }
 
-    }
 
-
-    class EventTask extends AsyncTask<Event, Void, List<Event>> {
+    class NewEventTask extends AsyncTask<Event, Void, List<Event>> {
 
         private static final int RESULT_OK = 233;
 
@@ -90,12 +84,13 @@ public class MainActivity extends AppCompatActivity {
             ) {
                 textViewEvents.append("\n" + event.title + " " + event.description + " " + event.date);
             }
-
-            Toast.makeText(MainActivity.this, "Событие создано", Toast.LENGTH_SHORT).show();
+            UpdateColorTask updateColorTask = new UpdateColorTask();
+            updateColorTask.execute();
         }
 
         @Override
         protected List<Event> doInBackground(Event... events) {
+
             EventDao dao = App.getInstance().getEventDatabase();
             if (events != null && events.length > 0) {
                 dao.insertAll(events);
@@ -104,4 +99,45 @@ public class MainActivity extends AppCompatActivity {
             return App.getInstance().getEventDatabase().getAll();
         }
     }
+
+
+    class UpdateColorTask extends AsyncTask<String, Void, HashSet<CalendarDay>> {
+
+        @Override
+        protected void onPostExecute(HashSet<CalendarDay> calendarDaysList) {
+            if (!calendarDaysList.isEmpty()) {
+                groupOfDaysDecorator = new GroupOfDaysDecorator(Color.parseColor("#F00A6B"), calendarDaysList);
+                calendarView.addDecorator(groupOfDaysDecorator);
+                calendarView.invalidateDecorators();
+            }
+
+        }
+
+        @Override
+        protected HashSet<CalendarDay> doInBackground(String... currentMonth) {
+
+            HashSet<CalendarDay> calendarDaysList = new HashSet<>();
+            List<Event> eventList = App.getInstance().getEventDatabase().getAll();
+
+            for (Event event : eventList
+            ) {
+                calendarDaysList.add(toCalendarDay(event.date));
+            }
+
+            return calendarDaysList;
+        }
+    }
+
+    public CalendarDay toCalendarDay(String date) {
+        int year, month, day;
+
+        year = Integer.parseInt(date.substring(0, date.indexOf('-')));
+        month = Integer.parseInt(date.substring(date.indexOf('-') + 1, date.lastIndexOf('-')));
+        day = Integer.parseInt(date.substring(date.lastIndexOf('-') + 1));
+
+        return CalendarDay.from(year, month, day);
+    }
+
 }
+
+
