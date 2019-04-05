@@ -35,7 +35,10 @@ public interface EventDao {
     boolean eventIsExists();*/
 
    /* @Query("SELECT * FROM event WHERE (:date) + '%' =date ")
-      List<Event> getEventsCurrentMonth(String date);*/
+      List<Event> getEventsCurrentMonth(String date);
+
+      @Query("SELECT * FROM DataModel WHERE date LIKE :date + "%")
+    List<DataModel> getByTitle(String date);*/
 
     /*
    @Query("SELECT * FROM event WHERE first_name LIKE :first AND " +

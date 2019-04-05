@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#518AFF</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorFab">#FFCD00</color>
-    <color name="colorCurentDay">#F2C200</color>
+    <color name="colorCurentDay">#FFCD00</color>
     <color name="colorSelectDay">#F00A6B</color>
     <color name="colorDaysWithEvent">#F00A6B</color>
     <color name="textColor">#FFF</color>

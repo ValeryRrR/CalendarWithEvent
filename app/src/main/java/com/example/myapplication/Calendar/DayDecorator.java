@@ -12,10 +12,12 @@ public class DayDecorator implements DayViewDecorator {
 
     private final int color;
     private final CalendarDay today;
+    private final float proportion;
 
-    public DayDecorator(int color, CalendarDay today) {
+    public DayDecorator(int color, CalendarDay today, float proportion) {
         this.color = color;
         this.today = today;
+        this.proportion = proportion;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class DayDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade dayViewFacade) {
-        dayViewFacade.addSpan(new RelativeSizeSpan(1.8f));
+        dayViewFacade.addSpan(new RelativeSizeSpan(proportion));
         dayViewFacade.addSpan(new ForegroundColorSpan(color));
 
     }

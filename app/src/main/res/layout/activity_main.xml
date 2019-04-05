@@ -44,15 +44,13 @@
             android:layout_marginTop="100dp"
             card_view:cardCornerRadius="8dp">
 
-            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                app:mcv_showOtherDates="all"
                 app:mcv_selectionColor="#00F"
-                />
+                app:mcv_showOtherDates="all" />
 
 
         </android.support.v7.widget.CardView>
@@ -63,29 +61,27 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="200dp"
             android:layout_marginTop="70dp"
-            app:srcCompat="@drawable/ic_fab"
-            app:backgroundTint="@color/colorFab" />
+            app:backgroundTint="@color/colorFab"
+            app:srcCompat="@drawable/ic_fab" />
 
         <TextView
             android:id="@+id/text_view_events"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/calendar_card_view"
             android:layout_marginTop="26dp"
             android:text="@string/events"
-            android:textColor="#8A8A8A"
-            android:layout_below="@id/calendar_card_view"/>
+            android:textColor="#8A8A8A" />
 
         <TextView
             android:id="@+id/text_view"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_marginTop="26dp"
-            android:textColor="#8A8A8A"
+            android:layout_height="wrap_content"
             android:layout_below="@id/text_view_events"
-            />
+            android:layout_marginTop="26dp"
+            android:textColor="#8A8A8A" />
 
     </RelativeLayout>
-
 
 
 </android.support.design.widget.CoordinatorLayout>

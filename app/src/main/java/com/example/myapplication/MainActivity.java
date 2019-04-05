@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -39,13 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
         calendarView = findViewById(R.id.calendarView);
 
-        calendarView.setDateSelected(CalendarDay.today(), true);
         calendarView.setTopbarVisible(false);
 
         updateColorTask = new UpdateColorTask();
         updateColorTask.execute();
 
-        dayDecorator = new DayDecorator(Color.parseColor("#F2C200"), CalendarDay.today());
+        dayDecorator = new DayDecorator(getResources().getColor(R.color.colorCurentDay), CalendarDay.today(), 1.8f);
         calendarView.addDecorator(dayDecorator);
         calendarView.invalidateDecorators();
 
@@ -53,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(calendarView.getSelectedDate() == null){
+                    Toast.makeText(MainActivity.this, getString(R.string.choise_date), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent intent = new Intent(view.getContext(), NewEventActivity.class);
                 intent.putExtra("SELECTDAY", calendarView.getSelectedDate().getDate().toString());
                 startActivityForResult(intent, 1);
@@ -63,11 +67,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (data == null) {
+            return;
+        }
         Event event = (Event) data.getSerializableExtra("Event");
         newEventTask = new NewEventTask();
         newEventTask.execute(event);
-        Toast.makeText(MainActivity.this, "Событие создано", Toast.LENGTH_SHORT).show();
-      }
+
+        DayDecorator dayDecoratorEvent = new DayDecorator(getResources().getColor(R.color.colorDaysWithEvent), toCalendarDay(event.date), 1);
+        calendarView.addDecorator(dayDecoratorEvent);
+        calendarView.invalidateDecorators();
+
+        Toast.makeText(MainActivity.this, getString(R.string.event_aded), Toast.LENGTH_SHORT).show();
+    }
 
 
     class NewEventTask extends AsyncTask<Event, Void, List<Event>> {
@@ -84,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
             ) {
                 textViewEvents.append("\n" + event.title + " " + event.description + " " + event.date);
             }
-            UpdateColorTask updateColorTask = new UpdateColorTask();
-            updateColorTask.execute();
         }
 
         @Override
@@ -106,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(HashSet<CalendarDay> calendarDaysList) {
             if (!calendarDaysList.isEmpty()) {
-                groupOfDaysDecorator = new GroupOfDaysDecorator(Color.parseColor("#F00A6B"), calendarDaysList);
+                groupOfDaysDecorator = new GroupOfDaysDecorator(getResources().getColor(R.color.colorDaysWithEvent), calendarDaysList);
                 calendarView.addDecorator(groupOfDaysDecorator);
                 calendarView.invalidateDecorators();
             }

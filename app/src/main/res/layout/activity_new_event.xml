@@ -7,14 +7,31 @@
     android:orientation="vertical"
     android:theme="@style/Theme.App.EditText">
 
-    <ImageButton
-        android:id="@+id/imageButtonOk"
-        android:layout_gravity="end"
-        android:padding="18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_ok"
-        android:background="@null" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/image_button_arrow_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:padding="18dp"
+            app:srcCompat="@drawable/ic_arrow_back" />
+
+        <ImageButton
+            android:id="@+id/imageButtonOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:padding="18dp"
+            app:srcCompat="@drawable/ic_ok" />
+
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/et_header"
@@ -23,9 +40,8 @@
         android:layout_margin="18dp"
         android:hint="@string/header"
         android:paddingTop="72dp"
-        android:textSize="20sp"
         android:textColor="#fff"
-        >
+        android:textSize="20sp">
 
         <requestFocus>
 
@@ -39,8 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
         android:hint="@string/main_text"
-        android:textSize="14sp"
-        android:textColor="#fff">
+        android:textColor="#fff"
+        android:textSize="14sp">
 
     </EditText>
 
@@ -50,8 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
         android:hint="@string/date"
-        android:textSize="14sp"
-        android:textColor="#fff">
+        android:textColor="#fff"
+        android:textSize="14sp">
 
     </EditText>
 
