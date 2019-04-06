@@ -79,8 +79,21 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/calendar_card_view"
             android:layout_marginTop="26dp"
+            android:textSize="14sp"
             android:text="@string/events"
             android:textColor="#8A8A8A" />
+
+        <Button
+            android:id="@+id/btn_show_all"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:text="Show all"
+            android:background="@null"
+            android:layout_below="@+id/calendar_card_view"
+            android:layout_alignEnd="@+id/calendar_card_view"
+            android:textColor="#8A8A8A"
+            android:layout_marginTop="26dp"
+            />
 
     </RelativeLayout>
 

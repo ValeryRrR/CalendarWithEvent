@@ -2,12 +2,14 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     MaterialCalendarView calendarView;
     UpdateColorTask updateColorTask;
-    NewEventTask newEventTask;
+    ListEventsTask listEventsTask;
     DayDecorator dayDecorator;
     GroupOfDaysDecorator groupOfDaysDecorator;
     FloatingActionButton fab;
@@ -40,18 +43,25 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         calendarView = findViewById(R.id.calendarView);
-
         calendarView.setTopbarVisible(false);
 
         updateColorTask = new UpdateColorTask();
         updateColorTask.execute();
 
-        ListEventsTask listEventsTask = new ListEventsTask();
+        listEventsTask = new ListEventsTask();
         listEventsTask.execute();
 
         dayDecorator = new DayDecorator(getResources().getColor(R.color.colorCurentDay), CalendarDay.today(), 1.8f);
         calendarView.addDecorator(dayDecorator);
         calendarView.invalidateDecorators();
+
+        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView, @NonNull CalendarDay calendarDay, boolean b) {
+                DayEventsTask dayEventsTask = new DayEventsTask();
+                dayEventsTask.execute(calendarDay.getDate().toString());
+            }
+        });
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +78,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+
+        Button btnShowAll = findViewById(R.id.btn_show_all);
+        btnShowAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listEventsTask = new ListEventsTask();
+                listEventsTask.execute();
+            }
+        });
     }
 
     @Override
@@ -77,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         Event event = (Event) data.getSerializableExtra("Event");
-        newEventTask = new NewEventTask();
-        newEventTask.execute(event);
 
         DayDecorator dayDecoratorEvent = new DayDecorator(getResources().getColor(R.color.colorDaysWithEvent), toCalendarDay(event.date), 1);
         calendarView.addDecorator(dayDecoratorEvent);
@@ -86,31 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
         eventsRecyclerAdapter.updateEvent(event);
 
-    }
-
-
-    class NewEventTask extends AsyncTask<Event, Void, Integer> {
-
-        private static final int RESULT_OK = 233;
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            if (result == RESULT_OK) {
-                Toast.makeText(MainActivity.this, getString(R.string.event_aded), Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-        @Override
-        protected Integer doInBackground(Event... events) {
-
-            EventDao dao = App.getInstance().getEventDatabase();
-            if (events != null && events.length > 0) {
-                dao.insertAll(events);
-            }
-
-            return RESULT_OK;
-        }
     }
 
 
@@ -154,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
     class ListEventsTask extends AsyncTask<Event, Void, List<Event>> {
 
-
         @Override
         protected void onPostExecute(List<Event> eventList) {
 
@@ -169,6 +160,24 @@ public class MainActivity extends AppCompatActivity {
         protected List<Event> doInBackground(Event... events) {
 
             return App.getInstance().getEventDatabase().getAll();
+        }
+    }
+
+    class DayEventsTask extends AsyncTask<String, Void, List<Event>> {
+
+        @Override
+        protected void onPostExecute(List<Event> eventList) {
+
+            eventsRecyclerAdapter = new EventsRecyclerAdapter(eventList);
+            RecyclerView recyclerView = findViewById(R.id.recyclerView);
+            recyclerView.setAdapter(eventsRecyclerAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        }
+
+        @Override
+        protected List<Event> doInBackground(String... date) {
+
+            return App.getInstance().getEventDatabase().getByDate(date[0]);
         }
     }
 

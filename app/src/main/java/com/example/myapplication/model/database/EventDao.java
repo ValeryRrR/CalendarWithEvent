@@ -22,6 +22,9 @@ public interface EventDao {
     @Query("SELECT EXISTS(SELECT * FROM event e WHERE (:date)=e.date)")
     boolean eventIsExists(String date);
 
+    @Query("SELECT * FROM event WHERE date LIKE (:date)")
+    List<Event> getByDate(String date);
+
     @Insert
     void insertAll(Event... events);
 

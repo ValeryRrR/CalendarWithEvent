@@ -2,13 +2,17 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.myapplication.model.database.App;
+import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
 
 public class NewEventActivity extends AppCompatActivity {
@@ -17,6 +21,8 @@ public class NewEventActivity extends AppCompatActivity {
     String title, description, date;
     ImageButton ok, back;
     InputMethodManager imgr;
+    NewEventTask newEventTask;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,9 @@ public class NewEventActivity extends AppCompatActivity {
                 event.description = description;
                 event.date = date;
 
+                newEventTask = new NewEventTask();
+                newEventTask.execute(event);
+
                 imgr.hideSoftInputFromWindow(NewEventActivity.this.getCurrentFocus().getWindowToken(), 0);
 
                 Intent intent = new Intent();
@@ -68,5 +77,29 @@ public class NewEventActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    class NewEventTask extends AsyncTask<Event, Void, Integer> {
+
+        private static final int RESULT_OK = 233;
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            if (result == RESULT_OK) {
+                Toast.makeText(NewEventActivity.this, getString(R.string.event_aded), Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        @Override
+        protected Integer doInBackground(Event... events) {
+
+            EventDao dao = App.getInstance().getEventDatabase();
+            if (events != null && events.length > 0) {
+                dao.insertAll(events);
+            }
+
+            return RESULT_OK;
+        }
     }
 }
