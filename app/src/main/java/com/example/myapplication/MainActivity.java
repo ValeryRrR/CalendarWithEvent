@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     DayDecorator dayDecorator;
     GroupOfDaysDecorator groupOfDaysDecorator;
     FloatingActionButton fab;
+    EventsRecyclerAdapter eventsRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         updateColorTask = new UpdateColorTask();
         updateColorTask.execute();
 
+        ListEventsTask listEventsTask = new ListEventsTask();
+        listEventsTask.execute();
+
         dayDecorator = new DayDecorator(getResources().getColor(R.color.colorCurentDay), CalendarDay.today(), 1.8f);
         calendarView.addDecorator(dayDecorator);
         calendarView.invalidateDecorators();
@@ -52,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(calendarView.getSelectedDate() == null){
+                if (calendarView.getSelectedDate() == null) {
                     Toast.makeText(MainActivity.this, getString(R.string.choise_date), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -78,35 +84,32 @@ public class MainActivity extends AppCompatActivity {
         calendarView.addDecorator(dayDecoratorEvent);
         calendarView.invalidateDecorators();
 
-        Toast.makeText(MainActivity.this, getString(R.string.event_aded), Toast.LENGTH_SHORT).show();
+        eventsRecyclerAdapter.updateEvent(event);
+
     }
 
 
-    class NewEventTask extends AsyncTask<Event, Void, List<Event>> {
+    class NewEventTask extends AsyncTask<Event, Void, Integer> {
 
         private static final int RESULT_OK = 233;
 
         @Override
-        protected void onPostExecute(List<Event> eventList) {
-
-            TextView textViewEvents = (TextView) findViewById(R.id.text_view);
-            textViewEvents.setText("");
-
-            for (Event event : eventList
-            ) {
-                textViewEvents.append("\n" + event.title + " " + event.description + " " + event.date);
+        protected void onPostExecute(Integer result) {
+            if (result == RESULT_OK) {
+                Toast.makeText(MainActivity.this, getString(R.string.event_aded), Toast.LENGTH_SHORT).show();
             }
+
         }
 
         @Override
-        protected List<Event> doInBackground(Event... events) {
+        protected Integer doInBackground(Event... events) {
 
             EventDao dao = App.getInstance().getEventDatabase();
             if (events != null && events.length > 0) {
                 dao.insertAll(events);
             }
 
-            return App.getInstance().getEventDatabase().getAll();
+            return RESULT_OK;
         }
     }
 
@@ -146,6 +149,27 @@ public class MainActivity extends AppCompatActivity {
         day = Integer.parseInt(date.substring(date.lastIndexOf('-') + 1));
 
         return CalendarDay.from(year, month, day);
+    }
+
+
+    class ListEventsTask extends AsyncTask<Event, Void, List<Event>> {
+
+
+        @Override
+        protected void onPostExecute(List<Event> eventList) {
+
+            eventsRecyclerAdapter = new EventsRecyclerAdapter(eventList);
+            RecyclerView recyclerView = findViewById(R.id.recyclerView);
+            recyclerView.setAdapter(eventsRecyclerAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+        }
+
+        @Override
+        protected List<Event> doInBackground(Event... events) {
+
+            return App.getInstance().getEventDatabase().getAll();
+        }
     }
 
 }

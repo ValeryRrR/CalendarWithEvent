@@ -7,5 +7,8 @@
     <color name="colorCurentDay">#FFCD00</color>
     <color name="colorSelectDay">#F00A6B</color>
     <color name="colorDaysWithEvent">#F00A6B</color>
-    <color name="textColor">#FFF</color>
+    <color name="colorEditText">#FFF</color>
+    <color name="colorHolderTitle">#3E3E3E</color>
+    <color name="colorHolderDescription">#BABABA</color>
+    <color name="colorHolderDate">#F00A6B</color>
 </resources>

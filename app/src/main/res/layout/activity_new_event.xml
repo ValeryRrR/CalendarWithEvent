@@ -40,7 +40,7 @@
         android:layout_margin="18dp"
         android:hint="@string/header"
         android:paddingTop="72dp"
-        android:textColor="#fff"
+        android:textColor="@color/colorEditText"
         android:textSize="20sp">
 
         <requestFocus>
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
         android:hint="@string/main_text"
-        android:textColor="#fff"
+        android:textColor="@color/colorEditText"
         android:textSize="14sp">
 
     </EditText>
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
         android:hint="@string/date"
-        android:textColor="#fff"
+        android:textColor="@color/colorEditText"
         android:textSize="14sp">
 
     </EditText>
