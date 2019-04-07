@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     GroupOfDaysDecorator groupOfDaysDecorator;
     FloatingActionButton fab;
     EventsRecyclerAdapter eventsRecyclerAdapter;
+    RecyclerView recyclerView;
+    EventsRecyclerAdapter.IItemClickListener listener;
+    Button btnShowAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,18 +82,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnShowAll = findViewById(R.id.btn_show_all);
+        btnShowAll = findViewById(R.id.btn_show_all);
         btnShowAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                calendarView.clearSelection();
                 listEventsTask = new ListEventsTask();
                 listEventsTask.execute();
             }
         });
+
+        listener = new EventsRecyclerAdapter.IItemClickListener() {
+            @Override
+            public void onItemClick(Event event) {
+                Intent intent = new Intent(MainActivity.this, EditEventActivity.class);
+                intent.putExtra("EditEvent", event);
+                startActivityForResult(intent, 2);
+            }
+        };
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == 2) {
+            calendarView.clearSelection();
+            ListEventsTask listEventsTask = new ListEventsTask();
+            listEventsTask.execute();
+            return;
+        }
 
         if (data == null) {
             return;
@@ -148,17 +168,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Event> eventList) {
-
-            eventsRecyclerAdapter = new EventsRecyclerAdapter(eventList);
-            RecyclerView recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setAdapter(eventsRecyclerAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
+            createRecyclerView(eventList);
         }
 
         @Override
         protected List<Event> doInBackground(Event... events) {
-
             return App.getInstance().getEventDatabase().getAll();
         }
     }
@@ -167,18 +181,21 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Event> eventList) {
-
-            eventsRecyclerAdapter = new EventsRecyclerAdapter(eventList);
-            RecyclerView recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setAdapter(eventsRecyclerAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            createRecyclerView(eventList);
         }
 
         @Override
         protected List<Event> doInBackground(String... date) {
-
             return App.getInstance().getEventDatabase().getByDate(date[0]);
         }
+    }
+
+    private void createRecyclerView(List<Event> eventList) {
+        eventsRecyclerAdapter = new EventsRecyclerAdapter(eventList);
+        recyclerView = findViewById(R.id.recyclerView);
+        eventsRecyclerAdapter.setOnClickListener(listener);
+        recyclerView.setAdapter(eventsRecyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
 }

@@ -25,6 +25,9 @@ public interface EventDao {
     @Query("SELECT * FROM event WHERE date LIKE (:date)")
     List<Event> getByDate(String date);
 
+    @Query("UPDATE event SET title = :title, description = :description WHERE uid = :id")
+    void updateById(int id, String title, String description);
+
     @Insert
     void insertAll(Event... events);
 
