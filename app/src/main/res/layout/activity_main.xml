@@ -87,7 +87,7 @@
             android:id="@+id/btn_show_all"
             android:layout_width="wrap_content"
             android:layout_height="16dp"
-            android:text="Show all"
+            android:text="@string/show_all"
             android:background="@null"
             android:layout_below="@+id/calendar_card_view"
             android:layout_alignEnd="@+id/calendar_card_view"

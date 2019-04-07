@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(view.getContext(), NewEventActivity.class);
-                intent.putExtra("SELECTDAY", calendarView.getSelectedDate().getDate().toString());
+                intent.putExtra("SelectedDay", calendarView.getSelectedDate().getDate().toString());
                 startActivityForResult(intent, 1);
             }
         });
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Event event = (Event) data.getSerializableExtra("Event");
 
-        DayDecorator dayDecoratorEvent = new DayDecorator(getResources().getColor(R.color.colorDaysWithEvent), toCalendarDay(event.date), 1);
+        DayDecorator dayDecoratorEvent = new DayDecorator(getResources().getColor(R.color.colorDaysWithEvent), toCalendarDay(event.getDate()), 1);
         calendarView.addDecorator(dayDecoratorEvent);
         calendarView.invalidateDecorators();
 
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
             for (Event event : eventList
             ) {
-                calendarDaysList.add(toCalendarDay(event.date));
+                calendarDaysList.add(toCalendarDay(event.getDate()));
             }
 
             return calendarDaysList;

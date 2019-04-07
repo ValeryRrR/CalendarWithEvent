@@ -14,14 +14,27 @@ import android.widget.Toast;
 import com.example.myapplication.model.database.App;
 import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
+import org.threeten.bp.LocalDate;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 public class NewEventActivity extends AppCompatActivity {
 
     EditText etHeader, etMainText, etDate;
-    String title, description, date;
+    String title, description, date, currentDate;
     ImageButton ok, back;
     InputMethodManager imgr;
     NewEventTask newEventTask;
+    String formattedDate;
+    SimpleDateFormat dateFormat;
+    SimpleDateFormat out;
 
 
     @Override
@@ -33,8 +46,10 @@ public class NewEventActivity extends AppCompatActivity {
         etHeader = findViewById(R.id.et_header);
         etMainText = findViewById(R.id.et_main_text);
 
+        currentDate = getIntent().getStringExtra("SelectedDay");
+
         etDate = findViewById(R.id.et_date);
-        etDate.setText(getIntent().getStringExtra("SELECTDAY"));
+        etDate.setText(formatDate("yyyy-MM-dd","EEEE, dd MMMM, yyyy"));
         etDate.setEnabled(false);
 
         /*Showing keybord when editText focused*/
@@ -52,9 +67,9 @@ public class NewEventActivity extends AppCompatActivity {
                 date = etDate.getText().toString();
 
                 Event event = new Event();
-                event.title = title;
-                event.description = description;
-                event.date = date;
+                event.setTitle(title);
+                event.setDescription(description);
+                event.setDate(currentDate);
 
                 newEventTask = new NewEventTask();
                 newEventTask.execute(event);
@@ -77,6 +92,19 @@ public class NewEventActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    private String formatDate(String fromPattern, String toPattern){
+        dateFormat = new SimpleDateFormat(fromPattern, Locale.getDefault());
+        out = new SimpleDateFormat(toPattern, Locale.getDefault());
+
+        try {
+            Date res = dateFormat.parse(currentDate);
+            formattedDate = out.format(res);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedDate;
     }
 
     class NewEventTask extends AsyncTask<Event, Void, Integer> {

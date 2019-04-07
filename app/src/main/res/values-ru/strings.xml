@@ -1,11 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">My Application</string>
-    <string name="header">Header</string>
-    <string name="main_text">Main text</string>
-    <string name="date">Date</string>
-    <string name="events">EVENTS</string>
+    <string name="header">Заголовок</string>
+    <string name="main_text">Описание</string>
+    <string name="date">Дата</string>
+    <string name="events">СОБИТИЯ</string>
     <string name="choise_date">Выберете дату события</string>
     <string name="event_aded">Событие создано</string>
     <string name="event_updeted">Событие обновлено</string>
-    <string name="show_all">Show all</string>
+    <string name="show_all">Показать все</string>
 </resources>

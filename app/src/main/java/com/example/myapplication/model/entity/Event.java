@@ -9,15 +9,47 @@ import java.io.Serializable;
 @Entity
 public class Event implements Serializable {
 
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
     @PrimaryKey(autoGenerate = true)
-    public int uid;
+    private int uid;
 
     @ColumnInfo(name = "title")
-    public String title;
+    private String title;
 
     @ColumnInfo(name = "description")
-    public String description;
+    private String description;
 
     @ColumnInfo(name = "date")
-    public String date;
+    private String date;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getDate() {
+        return date;
+    }
 }

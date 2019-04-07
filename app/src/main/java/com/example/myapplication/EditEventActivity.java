@@ -15,6 +15,11 @@ import com.example.myapplication.model.database.App;
 import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class EditEventActivity extends AppCompatActivity {
 
     EditText etHeader, etMainText, etDate;
@@ -37,9 +42,9 @@ public class EditEventActivity extends AppCompatActivity {
         etMainText = findViewById(R.id.et_main_text);
         etDate = findViewById(R.id.et_date);
 
-        etHeader.setText(event.title);
-        etMainText.setText(event.description);
-        etDate.setText(event.date);
+        etHeader.setText(event.getTitle());
+        etMainText.setText(event.getDescription());
+        etDate.setText(formatDate(event.getDate(),"yyyy-MM-dd", "EEEE, dd MMMM, yyyy" ));
         etDate.setEnabled(false);
 
         /*Showing keybord when editText focused*/
@@ -54,12 +59,10 @@ public class EditEventActivity extends AppCompatActivity {
 
                 title = etHeader.getText().toString();
                 description = etMainText.getText().toString();
-                date = etDate.getText().toString();
 
-
-                event.title = title;
-                event.description = description;
-                event.date = date;
+                event.setTitle(title);
+                event.setDescription(description);
+                event.setDate(date);
 
                 updateEventTask = new UpdateEventTask();
                 updateEventTask.execute(event);
@@ -100,10 +103,24 @@ public class EditEventActivity extends AppCompatActivity {
 
             EventDao dao = App.getInstance().getEventDatabase();
             if (events != null && events.length > 0) {
-                dao.updateById(events[0].uid, events[0].title, events[0].description);
+                dao.updateById(events[0].getUid(), events[0].getTitle(), events[0].getDescription());
             }
 
             return RESULT_OK;
         }
+    }
+
+    private String formatDate(String currentDate, String fromPattern, String toPattern){
+        SimpleDateFormat dateFormat = new SimpleDateFormat(fromPattern, Locale.getDefault());
+        SimpleDateFormat out = new SimpleDateFormat(toPattern, Locale.getDefault());
+        String formattedDate = "";
+
+        try {
+            Date res = dateFormat.parse(currentDate);
+            formattedDate = out.format(res);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedDate;
     }
 }

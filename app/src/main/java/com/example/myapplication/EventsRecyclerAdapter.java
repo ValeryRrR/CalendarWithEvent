@@ -9,12 +9,15 @@ import android.widget.TextView;
 
 import com.example.myapplication.model.entity.Event;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAdapter.ViewHolder> {
 
-    private List<Event> dataModels = new ArrayList<>();
+    private List<Event> dataModels;
     private IItemClickListener listener;
 
     public EventsRecyclerAdapter(List<Event> dataModels) {
@@ -53,6 +56,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private Event model;
+        private Event formatingModel;
         private TextView title;
         private TextView description;
         private TextView date;
@@ -67,10 +71,11 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
 
         void bind(Event eventModel) {
             model = eventModel;
+            formatingModel = eventModel;
 
-            title.setText(model.title);
-            description.setText(model.description);
-            date.setText(model.date);
+            title.setText(model.getTitle());
+            description.setText(model.getDescription());
+            date.setText(formatDate(formatingModel.getDate(),"yyyy-MM-dd", "dd   MMMM"));
         }
 
         void setItemClickListener(final IItemClickListener listener) {
@@ -90,5 +95,19 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
 
     interface IItemClickListener {
         void onItemClick(Event model);
+    }
+
+    private String formatDate(String currentDate, String fromPattern, String toPattern){
+        SimpleDateFormat dateFormat = new SimpleDateFormat(fromPattern, Locale.getDefault());
+        SimpleDateFormat out = new SimpleDateFormat(toPattern, Locale.getDefault());
+        String formattedDate = "";
+
+        try {
+            Date res = dateFormat.parse(currentDate);
+            formattedDate = out.format(res);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedDate;
     }
 }
