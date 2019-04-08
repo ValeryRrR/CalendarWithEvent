@@ -1,6 +1,5 @@
 package com.example.myapplication.Calendar;
 
-import android.graphics.Color;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 

@@ -15,12 +15,13 @@ import android.widget.Toast;
 
 import com.example.myapplication.Calendar.DayDecorator;
 import com.example.myapplication.Calendar.GroupOfDaysDecorator;
+import com.example.myapplication.Calendar.ParseDate.DateParser;
 import com.example.myapplication.model.database.App;
-import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,16 +29,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    MaterialCalendarView calendarView;
-    UpdateColorTask updateColorTask;
-    ListEventsTask listEventsTask;
-    DayDecorator dayDecorator;
-    GroupOfDaysDecorator groupOfDaysDecorator;
-    FloatingActionButton fab;
-    EventsRecyclerAdapter eventsRecyclerAdapter;
-    RecyclerView recyclerView;
-    EventsRecyclerAdapter.IItemClickListener listener;
-    Button btnShowAll;
+    private MaterialCalendarView calendarView;
+    private ListEventsTask listEventsTask;
+    private EventsRecyclerAdapter eventsRecyclerAdapter;
+    private EventsRecyclerAdapter.IItemClickListener listener;
+    private TextView currentMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +43,20 @@ public class MainActivity extends AppCompatActivity {
 
         calendarView = findViewById(R.id.calendarView);
         calendarView.setTopbarVisible(false);
+        currentMonth = findViewById(R.id.current_month);
 
-        updateColorTask = new UpdateColorTask();
+
+        UpdateColorTask updateColorTask = new UpdateColorTask();
         updateColorTask.execute();
 
         listEventsTask = new ListEventsTask();
         listEventsTask.execute();
 
-        dayDecorator = new DayDecorator(getResources().getColor(R.color.colorCurentDay), CalendarDay.today(), 1.8f);
+        DayDecorator dayDecorator = new DayDecorator(getResources().getColor(R.color.colorCurentDay), CalendarDay.today(), 1.8f);
         calendarView.addDecorator(dayDecorator);
         calendarView.invalidateDecorators();
+
+        currentMonth.setText(DateParser.formatDate(String.valueOf(calendarView.getCurrentDate().getMonth()), "MM", "LLLL"));
 
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnShowAll = findViewById(R.id.btn_show_all);
+        Button btnShowAll = findViewById(R.id.btn_show_all);
         btnShowAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 2);
             }
         };
+
+        calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
+                currentMonth.setText(DateParser.formatDate(String.valueOf(calendarDay.getMonth()), "MM", "LLLL"));
+            }
+        });
     }
 
     @Override
@@ -131,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(HashSet<CalendarDay> calendarDaysList) {
             if (!calendarDaysList.isEmpty()) {
-                groupOfDaysDecorator = new GroupOfDaysDecorator(getResources().getColor(R.color.colorDaysWithEvent), calendarDaysList);
+                GroupOfDaysDecorator groupOfDaysDecorator = new GroupOfDaysDecorator(getResources().getColor(R.color.colorDaysWithEvent), calendarDaysList);
                 calendarView.addDecorator(groupOfDaysDecorator);
                 calendarView.invalidateDecorators();
             }
@@ -144,8 +151,7 @@ public class MainActivity extends AppCompatActivity {
             HashSet<CalendarDay> calendarDaysList = new HashSet<>();
             List<Event> eventList = App.getInstance().getEventDatabase().getAll();
 
-            for (Event event : eventList
-            ) {
+            for (Event event : eventList) {
                 calendarDaysList.add(toCalendarDay(event.getDate()));
             }
 
@@ -153,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public CalendarDay toCalendarDay(String date) {
+    private CalendarDay toCalendarDay(String date) {
         int year, month, day;
 
         year = Integer.parseInt(date.substring(0, date.indexOf('-')));
@@ -164,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    class ListEventsTask extends AsyncTask<Event, Void, List<Event>> {
+    private class ListEventsTask extends AsyncTask<Event, Void, List<Event>> {
 
         @Override
         protected void onPostExecute(List<Event> eventList) {
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class DayEventsTask extends AsyncTask<String, Void, List<Event>> {
+    private class DayEventsTask extends AsyncTask<String, Void, List<Event>> {
 
         @Override
         protected void onPostExecute(List<Event> eventList) {
@@ -192,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createRecyclerView(List<Event> eventList) {
         eventsRecyclerAdapter = new EventsRecyclerAdapter(eventList);
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         eventsRecyclerAdapter.setOnClickListener(listener);
         recyclerView.setAdapter(eventsRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));

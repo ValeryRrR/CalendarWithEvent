@@ -7,20 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.myapplication.Calendar.ParseDate.DateParser;
 import com.example.myapplication.model.entity.Event;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAdapter.ViewHolder> {
 
     private List<Event> dataModels;
     private IItemClickListener listener;
 
-    public EventsRecyclerAdapter(List<Event> dataModels) {
+    public EventsRecyclerAdapter(List<Event> dataModels) {            ///копировать значение массива
         this.dataModels = dataModels;
     }
 
@@ -75,7 +72,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
 
             title.setText(model.getTitle());
             description.setText(model.getDescription());
-            date.setText(formatDate(formatingModel.getDate(),"yyyy-MM-dd", "dd   MMMM"));
+            date.setText(DateParser.formatDate(formatingModel.getDate(),"yyyy-MM-dd", "dd   MMMM"));
         }
 
         void setItemClickListener(final IItemClickListener listener) {
@@ -95,19 +92,5 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
 
     interface IItemClickListener {
         void onItemClick(Event model);
-    }
-
-    private String formatDate(String currentDate, String fromPattern, String toPattern){
-        SimpleDateFormat dateFormat = new SimpleDateFormat(fromPattern, Locale.getDefault());
-        SimpleDateFormat out = new SimpleDateFormat(toPattern, Locale.getDefault());
-        String formattedDate = "";
-
-        try {
-            Date res = dateFormat.parse(currentDate);
-            formattedDate = out.format(res);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return formattedDate;
     }
 }

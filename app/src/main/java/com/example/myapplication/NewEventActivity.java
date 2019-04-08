@@ -11,30 +11,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.myapplication.Calendar.ParseDate.DateParser;
 import com.example.myapplication.model.database.App;
 import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 
-import org.threeten.bp.LocalDate;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
 
 public class NewEventActivity extends AppCompatActivity {
 
-    EditText etHeader, etMainText, etDate;
-    String title, description, date, currentDate;
-    ImageButton ok, back;
-    InputMethodManager imgr;
-    NewEventTask newEventTask;
-    String formattedDate;
-    SimpleDateFormat dateFormat;
-    SimpleDateFormat out;
+    private EditText etHeader;
+    private EditText etMainText;
+    private String title, description, currentDate;
+    private InputMethodManager imgr;
+    private NewEventTask newEventTask;
 
 
     @Override
@@ -48,8 +37,8 @@ public class NewEventActivity extends AppCompatActivity {
 
         currentDate = getIntent().getStringExtra("SelectedDay");
 
-        etDate = findViewById(R.id.et_date);
-        etDate.setText(formatDate("yyyy-MM-dd","EEEE, dd MMMM, yyyy"));
+        EditText etDate = findViewById(R.id.et_date);
+        etDate.setText(DateParser.formatDate(currentDate,"yyyy-MM-dd","EEEE, dd MMMM, yyyy"));
         etDate.setEnabled(false);
 
         /*Showing keybord when editText focused*/
@@ -57,34 +46,32 @@ public class NewEventActivity extends AppCompatActivity {
         imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
 
-        ok = findViewById(R.id.imageButtonOk);
+        ImageButton ok = findViewById(R.id.imageButtonOk);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 title = etHeader.getText().toString();
                 description = etMainText.getText().toString();
-                date = etDate.getText().toString();
 
                 Event event = new Event();
                 event.setTitle(title);
                 event.setDescription(description);
                 event.setDate(currentDate);
 
-                newEventTask = new NewEventTask();
-                newEventTask.execute(event);
-
                 imgr.hideSoftInputFromWindow(NewEventActivity.this.getCurrentFocus().getWindowToken(), 0);
 
                 Intent intent = new Intent();
                 intent.putExtra("Event", event);
                 setResult(RESULT_OK, intent);
-                finish();
+
+                newEventTask = new NewEventTask();
+                newEventTask.execute(event);
 
             }
         });
 
-        back = findViewById(R.id.image_button_arrow_back);
+        ImageButton back = findViewById(R.id.image_button_arrow_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,19 +79,6 @@ public class NewEventActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-    }
-
-    private String formatDate(String fromPattern, String toPattern){
-        dateFormat = new SimpleDateFormat(fromPattern, Locale.getDefault());
-        out = new SimpleDateFormat(toPattern, Locale.getDefault());
-
-        try {
-            Date res = dateFormat.parse(currentDate);
-            formattedDate = out.format(res);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return formattedDate;
     }
 
     class NewEventTask extends AsyncTask<Event, Void, Integer> {
@@ -116,7 +90,7 @@ public class NewEventActivity extends AppCompatActivity {
             if (result == RESULT_OK) {
                 Toast.makeText(NewEventActivity.this, getString(R.string.event_aded), Toast.LENGTH_SHORT).show();
             }
-
+            finish();
         }
 
         @Override

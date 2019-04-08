@@ -9,10 +9,6 @@ import java.io.Serializable;
 @Entity
 public class Event implements Serializable {
 
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
@@ -24,6 +20,10 @@ public class Event implements Serializable {
 
     @ColumnInfo(name = "date")
     private String date;
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 
     public void setTitle(String title) {
         this.title = title;

@@ -11,23 +11,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.myapplication.Calendar.ParseDate.DateParser;
 import com.example.myapplication.model.database.App;
 import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+
 
 public class EditEventActivity extends AppCompatActivity {
 
-    EditText etHeader, etMainText, etDate;
-    String title, description, date;
-    ImageButton ok, back;
-    InputMethodManager imgr;
-    UpdateEventTask updateEventTask;
-    Event event;
+    private EditText etHeader;
+    private EditText etMainText;
+    private String title, description;
+    private InputMethodManager imgr;
+    private UpdateEventTask updateEventTask;
+    private Event event;
 
 
     @Override
@@ -40,19 +38,18 @@ public class EditEventActivity extends AppCompatActivity {
 
         etHeader = findViewById(R.id.et_header);
         etMainText = findViewById(R.id.et_main_text);
-        etDate = findViewById(R.id.et_date);
+        EditText etDate = findViewById(R.id.et_date);
+        ImageButton ok = findViewById(R.id.imageButtonOk);
 
         etHeader.setText(event.getTitle());
         etMainText.setText(event.getDescription());
-        etDate.setText(formatDate(event.getDate(),"yyyy-MM-dd", "EEEE, dd MMMM, yyyy" ));
+        etDate.setText(DateParser.formatDate(event.getDate(),"yyyy-MM-dd", "EEEE, dd MMMM, yyyy" ));
         etDate.setEnabled(false);
 
         /*Showing keybord when editText focused*/
         imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
-
-        ok = findViewById(R.id.imageButtonOk);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +59,6 @@ public class EditEventActivity extends AppCompatActivity {
 
                 event.setTitle(title);
                 event.setDescription(description);
-                event.setDate(date);
 
                 updateEventTask = new UpdateEventTask();
                 updateEventTask.execute(event);
@@ -76,7 +72,7 @@ public class EditEventActivity extends AppCompatActivity {
             }
         });
 
-        back = findViewById(R.id.image_button_arrow_back);
+        ImageButton back = findViewById(R.id.image_button_arrow_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,19 +104,5 @@ public class EditEventActivity extends AppCompatActivity {
 
             return RESULT_OK;
         }
-    }
-
-    private String formatDate(String currentDate, String fromPattern, String toPattern){
-        SimpleDateFormat dateFormat = new SimpleDateFormat(fromPattern, Locale.getDefault());
-        SimpleDateFormat out = new SimpleDateFormat(toPattern, Locale.getDefault());
-        String formattedDate = "";
-
-        try {
-            Date res = dateFormat.parse(currentDate);
-            formattedDate = out.format(res);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return formattedDate;
     }
 }
