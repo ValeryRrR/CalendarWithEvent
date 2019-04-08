@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private EventsRecyclerAdapter eventsRecyclerAdapter;
     private EventsRecyclerAdapter.IItemClickListener listener;
     private TextView currentMonth;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         calendarView.setTopbarVisible(false);
         currentMonth = findViewById(R.id.current_month);
-
+        recyclerView = findViewById(R.id.recyclerView);
 
         UpdateColorTask updateColorTask = new UpdateColorTask();
         updateColorTask.execute();
@@ -198,12 +199,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void createRecyclerView(List<Event> eventList) {
         eventsRecyclerAdapter = new EventsRecyclerAdapter(eventList);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         eventsRecyclerAdapter.setOnClickListener(listener);
         recyclerView.setAdapter(eventsRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
-
 }
 
 

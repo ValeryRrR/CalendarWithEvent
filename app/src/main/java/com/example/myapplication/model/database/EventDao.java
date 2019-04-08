@@ -37,20 +37,5 @@ public interface EventDao {
     @Update
     void updateEvent(Event... users);
 
-    /*@Query("SELECT * FROM event d WHERE EXISTS (SELECT * FROM employees e WHERE d.department_id = e.department_id);")
-    boolean eventIsExists();*/
-
-   /* @Query("SELECT * FROM event WHERE (:date) + '%' =date ")
-      List<Event> getEventsCurrentMonth(String date);
-
-      @Query("SELECT * FROM DataModel WHERE date LIKE :date + "%")
-    List<DataModel> getByTitle(String date);*/
-
-    /*
-   @Query("SELECT * FROM event WHERE first_name LIKE :first AND " +
-            "last_name LIKE :last LIMIT 1")
-    User findByName(String first, String last);
-*/
-
 }
 
