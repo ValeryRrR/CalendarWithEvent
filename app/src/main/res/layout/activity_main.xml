@@ -48,7 +48,7 @@
             android:id="@+id/current_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:textSize="30sp"
             android:textColor="#fff"
             />
@@ -75,8 +75,9 @@
             android:id="@+id/fab"
             android:layout_width="58dp"
             android:layout_height="58dp"
-            android:layout_marginStart="220dp"
+            android:layout_alignEnd="@id/calendar_card_view"
             android:layout_marginTop="70dp"
+            android:layout_marginEnd="20dp"
             android:scaleType="center"
             app:srcCompat="@drawable/ic_plus"
             app:backgroundTint="@color/colorFab"/>
