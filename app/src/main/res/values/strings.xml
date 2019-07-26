@@ -8,4 +8,5 @@
     <string name="event_aded">Событие создано</string>
     <string name="event_updeted">Событие обновлено</string>
     <string name="show_all">Show all</string>
+    <string name="fill_in_the_header">Заполните заголовок</string>
 </resources>

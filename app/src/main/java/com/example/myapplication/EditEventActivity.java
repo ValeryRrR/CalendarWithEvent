@@ -1,12 +1,10 @@
 package com.example.myapplication;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -23,7 +21,7 @@ public class EditEventActivity extends AppCompatActivity {
     private EditText etHeader;
     private EditText etMainText;
     private String title, description;
-    private InputMethodManager imgr;
+    //private InputMethodManager imgr;
     private UpdateEventTask updateEventTask;
     private Event event;
 
@@ -41,14 +39,19 @@ public class EditEventActivity extends AppCompatActivity {
         EditText etDate = findViewById(R.id.et_date);
         ImageButton ok = findViewById(R.id.imageButtonOk);
 
+        if(title.equals("") && description.equals("")){
+            Toast.makeText(EditEventActivity.this, getString(R.string.fill_in_the_header), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         etHeader.setText(event.getTitle());
         etMainText.setText(event.getDescription());
         etDate.setText(DateParser.formatDate(event.getDate(),"yyyy-MM-dd", "EEEE, dd MMMM, yyyy" ));
         etDate.setEnabled(false);
 
         /*Showing keybord when editText focused*/
-        imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+       // imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+       // imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +66,7 @@ public class EditEventActivity extends AppCompatActivity {
                 updateEventTask = new UpdateEventTask();
                 updateEventTask.execute(event);
 
-                imgr.hideSoftInputFromWindow(EditEventActivity.this.getCurrentFocus().getWindowToken(), 0);
+              //  imgr.hideSoftInputFromWindow(EditEventActivity.this.getCurrentFocus().getWindowToken(), 0);
 
                 Intent intent = new Intent();
                 setResult(2, intent);
@@ -76,7 +79,7 @@ public class EditEventActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgr.hideSoftInputFromWindow(EditEventActivity.this.getCurrentFocus().getWindowToken(), 0);
+              //  imgr.hideSoftInputFromWindow(EditEventActivity.this.getCurrentFocus().getWindowToken(), 0);
                 onBackPressed();
             }
         });

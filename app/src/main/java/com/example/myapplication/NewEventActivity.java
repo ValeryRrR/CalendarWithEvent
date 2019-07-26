@@ -54,6 +54,11 @@ public class NewEventActivity extends AppCompatActivity {
                 title = etHeader.getText().toString();
                 description = etMainText.getText().toString();
 
+                if(title.equals("") && description.equals("")){
+                    Toast.makeText(NewEventActivity.this, getString(R.string.fill_in_the_header), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Event event = new Event();
                 event.setTitle(title);
                 event.setDescription(description);

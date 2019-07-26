@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 calendarView.addDecorator(groupOfDaysDecorator);
                 calendarView.invalidateDecorators();
             }
-
         }
 
         @Override
