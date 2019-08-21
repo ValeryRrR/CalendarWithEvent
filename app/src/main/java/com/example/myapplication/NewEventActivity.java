@@ -17,10 +17,13 @@ import com.example.myapplication.model.database.EventDao;
 import com.example.myapplication.model.entity.Event;
 
 
-public class NewEventActivity extends AppCompatActivity {
+public class NewEventActivity extends AppCompatActivity implements DatePickerFragment.onFragmentDateListener {
 
+    private static int DIALOG_DATE;
     private EditText etHeader;
     private EditText etMainText;
+    private EditText etDate;
+    private DatePickerFragment datePickerFragment;
     private String title, description, currentDate;
     private InputMethodManager imgr;
     private NewEventTask newEventTask;
@@ -37,13 +40,24 @@ public class NewEventActivity extends AppCompatActivity {
 
         currentDate = getIntent().getStringExtra("SelectedDay");
 
-        EditText etDate = findViewById(R.id.et_date);
+        etDate = findViewById(R.id.et_date);
         etDate.setText(DateParser.formatDate(currentDate,"yyyy-MM-dd","EEEE, dd MMMM, yyyy"));
-        etDate.setEnabled(false);
+        //etDate.setEnabled(false);
 
         /*Showing keybord when editText focused*/
         imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //etDate.setInputType(InputType.TYPE_NULL);
+                imgr.hideSoftInputFromWindow(NewEventActivity.this.getCurrentFocus().getWindowToken(), 0);
+                datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(getSupportFragmentManager(), "DatePicker");
+            }
+        });
 
 
         ImageButton ok = findViewById(R.id.imageButtonOk);
@@ -84,6 +98,15 @@ public class NewEventActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+
+    @Override
+    public void onDateSateChoisen(int year, int month, int day) {
+
+        currentDate = DateParser.formatDate((Integer.toString(year) + "-" + Integer.toString(month + 1) + "-" + Integer.toString(day)),
+                "yyyy-MM-dd", "yyyy-MM-dd");
+        etDate.setText(DateParser.formatDate(currentDate, "yyyy-MM-dd","EEEE, dd MMMM, yyyy"));
     }
 
     class NewEventTask extends AsyncTask<Event, Void, Integer> {

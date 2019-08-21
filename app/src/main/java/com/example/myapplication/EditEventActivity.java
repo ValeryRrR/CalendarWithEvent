@@ -39,11 +39,6 @@ public class EditEventActivity extends AppCompatActivity {
         EditText etDate = findViewById(R.id.et_date);
         ImageButton ok = findViewById(R.id.imageButtonOk);
 
-        if(title.equals("") && description.equals("")){
-            Toast.makeText(EditEventActivity.this, getString(R.string.fill_in_the_header), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         etHeader.setText(event.getTitle());
         etMainText.setText(event.getDescription());
         etDate.setText(DateParser.formatDate(event.getDate(),"yyyy-MM-dd", "EEEE, dd MMMM, yyyy" ));
@@ -59,6 +54,11 @@ public class EditEventActivity extends AppCompatActivity {
 
                 title = etHeader.getText().toString();
                 description = etMainText.getText().toString();
+
+                if(title.equals("") && description.equals("")){
+                    Toast.makeText(EditEventActivity.this, getString(R.string.fill_in_the_header), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 event.setTitle(title);
                 event.setDescription(description);

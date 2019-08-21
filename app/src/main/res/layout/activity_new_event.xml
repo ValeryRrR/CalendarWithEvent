@@ -67,7 +67,8 @@
         android:layout_margin="18dp"
         android:hint="@string/date"
         android:textColor="@color/colorEditText"
-        android:textSize="14sp">
+        android:textSize="14sp"
+        android:focusable="false">
 
     </EditText>
 
