@@ -1,4 +1,4 @@
-package com.example.myapplication.model.database;
+package com.example.myapplication.models.database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -6,7 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.example.myapplication.model.entity.Event;
+import com.example.myapplication.models.entity.Event;
 
 import java.util.List;
 
@@ -25,8 +25,8 @@ public interface EventDao {
     @Query("SELECT * FROM event WHERE date LIKE (:date)")
     List<Event> getByDate(String date);
 
-    @Query("UPDATE event SET title = :title, description = :description WHERE uid = :id")
-    void updateById(int id, String title, String description);
+    @Query("UPDATE event SET title = :title, description = :description, date = :date WHERE uid = :id")
+    void updateById(int id, String title, String description, String date);
 
     @Insert
     void insertAll(Event... events);

@@ -10,39 +10,36 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.myapplication.Calendar.ParseDate.DateParser;
-import com.example.myapplication.model.database.App;
-import com.example.myapplication.model.database.EventDao;
-import com.example.myapplication.model.entity.Event;
+import com.example.myapplication.models.database.App;
+import com.example.myapplication.models.database.EventDao;
+import com.example.myapplication.models.entity.Event;
 
 
 
-public class EditEventActivity extends AppCompatActivity {
+public class EditEventActivity extends AppCompatActivity implements DatePickerFragment.onFragmentDateListener {
 
-    private EditText etHeader;
-    private EditText etMainText;
-    private String title, description;
+    private EditText etHeader, etMainText, etDate;
+    private String title, description, currentDate;
+    private DatePickerFragment datePickerFragment;
     //private InputMethodManager imgr;
     private UpdateEventTask updateEventTask;
     private Event event;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
-        getSupportActionBar().hide();
 
         event = (Event) getIntent().getSerializableExtra("EditEvent");
 
         etHeader = findViewById(R.id.et_header);
         etMainText = findViewById(R.id.et_main_text);
-        EditText etDate = findViewById(R.id.et_date);
+        etDate = findViewById(R.id.et_date);
         ImageButton ok = findViewById(R.id.imageButtonOk);
 
         etHeader.setText(event.getTitle());
         etMainText.setText(event.getDescription());
         etDate.setText(DateParser.formatDate(event.getDate(),"yyyy-MM-dd", "EEEE, dd MMMM, yyyy" ));
-        etDate.setEnabled(false);
 
         /*Showing keybord when editText focused*/
        // imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -62,6 +59,7 @@ public class EditEventActivity extends AppCompatActivity {
 
                 event.setTitle(title);
                 event.setDescription(description);
+                event.setDate(currentDate);
 
                 updateEventTask = new UpdateEventTask();
                 updateEventTask.execute(event);
@@ -83,6 +81,24 @@ public class EditEventActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        etDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //etDate.setInputType(InputType.TYPE_NULL);
+                //imgr.hideSoftInputFromWindow(EditEventActivity.this.getCurrentFocus().getWindowToken(), 0);
+                datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(getSupportFragmentManager(), "DatePicker");
+            }
+        });
+    }
+
+    @Override
+    public void onDateSateChoisen(int year, int month, int day) {
+
+        currentDate = DateParser.formatDate((Integer.toString(year) + "-" + Integer.toString(month + 1) + "-" + Integer.toString(day)),
+                "yyyy-MM-dd", "yyyy-MM-dd");
+        etDate.setText(DateParser.formatDate(currentDate, "yyyy-MM-dd","EEEE, dd MMMM, yyyy"));
     }
 
     class UpdateEventTask extends AsyncTask<Event, Void, Integer> {
@@ -102,7 +118,7 @@ public class EditEventActivity extends AppCompatActivity {
 
             EventDao dao = App.getInstance().getEventDatabase();
             if (events != null && events.length > 0) {
-                dao.updateById(events[0].getUid(), events[0].getTitle(), events[0].getDescription());
+                dao.updateById(events[0].getUid(), events[0].getTitle(), events[0].getDescription(), events[0].getDate());
             }
 
             return RESULT_OK;

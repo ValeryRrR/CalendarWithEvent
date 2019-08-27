@@ -1,4 +1,4 @@
-package com.example.myapplication.model.database;
+package com.example.myapplication.models.database;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;

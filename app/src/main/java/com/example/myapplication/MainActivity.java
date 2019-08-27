@@ -16,8 +16,9 @@ import android.widget.Toast;
 import com.example.myapplication.Calendar.DayDecorator;
 import com.example.myapplication.Calendar.GroupOfDaysDecorator;
 import com.example.myapplication.Calendar.ParseDate.DateParser;
-import com.example.myapplication.model.database.App;
-import com.example.myapplication.model.entity.Event;
+import com.example.myapplication.models.database.App;
+import com.example.myapplication.models.entity.Event;
+import com.example.myapplication.views.NewEventActivity;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
 
         calendarView = findViewById(R.id.calendarView);
         calendarView.setTopbarVisible(false);

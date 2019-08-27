@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".model.database.App"
+        android:name=".models.database.App"
         >
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewEventActivity"></activity>
+        <activity android:name=".views.NewEventActivity"></activity>
         <activity android:name=".EditEventActivity"></activity>
     </application>
 

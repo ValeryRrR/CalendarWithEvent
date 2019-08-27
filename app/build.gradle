@@ -35,4 +35,8 @@ dependencies {
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation "com.github.prolificinteractive:material-calendarview:2.0.0"
+
+    implementation 'com.github.moxy-community:moxy:1.0.13'
+    annotationProcessor 'com.github.moxy-community:moxy-compiler:1.0.13'
+    implementation 'com.github.moxy-community:moxy-app-compat:1.0.13'
 }

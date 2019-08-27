@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.myapplication.Calendar.ParseDate.DateParser;
-import com.example.myapplication.model.entity.Event;
+import com.example.myapplication.models.entity.Event;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
     private List<Event> dataModels;
     private IItemClickListener listener;
 
-    public EventsRecyclerAdapter(List<Event> dataModels) {            ///копировать значение массива
+    public EventsRecyclerAdapter(List<Event> dataModels) {
         this.dataModels = dataModels;
     }
 
