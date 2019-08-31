@@ -18,6 +18,7 @@ import com.example.myapplication.Calendar.GroupOfDaysDecorator;
 import com.example.myapplication.Calendar.ParseDate.DateParser;
 import com.example.myapplication.models.database.App;
 import com.example.myapplication.models.entity.Event;
+import com.example.myapplication.views.EditEventActivity;
 import com.example.myapplication.views.NewEventActivity;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;

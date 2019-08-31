@@ -73,7 +73,7 @@ public class NewEventActivity extends MvpAppCompatActivity implements DatePicker
     }
 
     @Override
-    public void showEditDate(@NonNull String text) {
+    public void fillEditDate(@NonNull String text) {
         etDate.setText(text);
     }
 

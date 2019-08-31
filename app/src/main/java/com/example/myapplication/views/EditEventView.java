@@ -10,9 +10,13 @@ import moxy.viewstate.strategy.OneExecutionStateStrategy;
 import moxy.viewstate.strategy.StateStrategyType;
 
 @StateStrategyType(AddToEndSingleStrategy.class)
-public interface NewEventView extends MvpView {
+public interface EditEventView extends MvpView {
 
     void fillEditDate(@NonNull String text);
+
+    void fillHeader(@NonNull String text);
+
+    void fillDescription(@NonNull String text);
 
     void showToast(@StringRes int textId);
 

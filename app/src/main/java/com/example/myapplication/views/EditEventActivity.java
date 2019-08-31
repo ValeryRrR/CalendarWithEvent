@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.views;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,32 +10,48 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.myapplication.Calendar.ParseDate.DateParser;
+import com.example.myapplication.DatePickerFragment;
+import com.example.myapplication.R;
 import com.example.myapplication.models.database.App;
 import com.example.myapplication.models.database.EventDao;
 import com.example.myapplication.models.entity.Event;
+import com.example.myapplication.presenters.EditEventPresenter;
+import com.example.myapplication.presenters.NewEventPresenter;
+
+import moxy.MvpAppCompatActivity;
+import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 
 
-
-public class EditEventActivity extends AppCompatActivity implements DatePickerFragment.onFragmentDateListener {
+public class EditEventActivity extends MvpAppCompatActivity implements DatePickerFragment.onFragmentDateListener {
 
     private EditText etHeader, etMainText, etDate;
-    private String title, description, currentDate;
+
     private DatePickerFragment datePickerFragment;
     //private InputMethodManager imgr;
     private UpdateEventTask updateEventTask;
-    private Event event;
+
+
+    @InjectPresenter
+    EditEventPresenter newEditEventPresenter;
+
+    @ProvidePresenter
+    protected EditEventPresenter provideNewEventPresenter() {
+        return new EditEventPresenter(getIntent());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
 
-        event = (Event) getIntent().getSerializableExtra("EditEvent");
+
 
         etHeader = findViewById(R.id.et_header);
         etMainText = findViewById(R.id.et_main_text);
         etDate = findViewById(R.id.et_date);
         ImageButton ok = findViewById(R.id.imageButtonOk);
+        ImageButton back = findViewById(R.id.image_button_arrow_back);
 
         etHeader.setText(event.getTitle());
         etMainText.setText(event.getDescription());
@@ -73,7 +89,6 @@ public class EditEventActivity extends AppCompatActivity implements DatePickerFr
             }
         });
 
-        ImageButton back = findViewById(R.id.image_button_arrow_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

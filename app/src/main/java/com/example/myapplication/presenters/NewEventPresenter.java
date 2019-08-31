@@ -35,7 +35,7 @@ public class NewEventPresenter extends MvpPresenter<NewEventView> {
         super.onFirstViewAttach();
 
         String currentDate = DateParser.formatDate(rawSelectedDay,"yyyy-MM-dd","EEEE, dd MMMM, yyyy");
-        getViewState().showEditDate(currentDate);
+        getViewState().fillEditDate(currentDate);
     }
 
     public void etDateOnClicked() {
@@ -68,7 +68,7 @@ public class NewEventPresenter extends MvpPresenter<NewEventView> {
                 "yyyy-MM-dd", "yyyy-MM-dd");
 
         String currentDate = DateParser.formatDate(rawSelectedDay, "yyyy-MM-dd","EEEE, dd MMMM, yyyy");
-        getViewState().showEditDate(currentDate);
+        getViewState().fillEditDate(currentDate);
     }
 
 
