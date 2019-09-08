@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private EventsRecyclerAdapter.IItemClickListener listener;
     private TextView currentMonth;
     private RecyclerView recyclerView;
+    public static final int EVENT_ADDED  = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
 
-        if (resultCode == 2) {
+        if (resultCode == EVENT_ADDED) {
             calendarView.clearSelection();
             ListEventsTask listEventsTask = new ListEventsTask();
             listEventsTask.execute();

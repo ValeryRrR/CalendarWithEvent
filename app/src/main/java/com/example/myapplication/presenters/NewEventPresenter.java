@@ -60,6 +60,7 @@ public class NewEventPresenter extends MvpPresenter<NewEventView> {
             intent.putExtra("Event", event);
 
             new NewEventTask(intent).execute(event);
+            getViewState().finishView(intent);
         }
     }
 
@@ -83,7 +84,6 @@ public class NewEventPresenter extends MvpPresenter<NewEventView> {
         @Override
         protected void onPostExecute(Void result) {
             getViewState().showToast(R.string.event_aded);
-            getViewState().finishView(finishIntent);
         }
 
         @Override
