@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import com.example.myapplication.DatePickerFragment;
+
 import com.example.myapplication.R;
 import com.example.myapplication.presenters.NewEventPresenter;
 
@@ -22,7 +22,6 @@ public class NewEventActivity extends MvpAppCompatActivity implements DatePicker
 
     private EditText etHeader, etMainText, etDate;
     private ImageButton imageButtonOk;
-
     private DatePickerFragment datePickerFragment;
     private InputMethodManager imgr;
 
@@ -43,6 +42,7 @@ public class NewEventActivity extends MvpAppCompatActivity implements DatePicker
         etMainText = findViewById(R.id.et_main_text);
         etDate = findViewById(R.id.et_date);
         imageButtonOk = findViewById(R.id.imageButtonOk);
+        ImageButton back = findViewById(R.id.image_button_arrow_back);
 
         /*Showing keybord when editText focused*/
         imgr = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -57,12 +57,9 @@ public class NewEventActivity extends MvpAppCompatActivity implements DatePicker
 
         imageButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                newEventPresenter.okButtonClicked(etHeader.getText().toString(), etMainText.getText().toString());
-            }
+            public void onClick(View view) { newEventPresenter.okButtonClicked(etHeader.getText().toString(), etMainText.getText().toString()); }
         });
 
-        ImageButton back = findViewById(R.id.image_button_arrow_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,5 +100,4 @@ public class NewEventActivity extends MvpAppCompatActivity implements DatePicker
     public void onDateSateChoisen(int year, int month, int day) {
         newEventPresenter.onCurrentDateChoisen(year, month, day);
     }
-
 }

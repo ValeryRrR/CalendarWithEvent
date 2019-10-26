@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.myapplication.DatePickerFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.presenters.EditEventPresenter;
 

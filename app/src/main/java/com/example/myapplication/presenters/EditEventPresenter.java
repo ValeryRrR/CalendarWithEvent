@@ -3,17 +3,13 @@ package com.example.myapplication.presenters;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.example.myapplication.Calendar.ParseDate.DateParser;
 import com.example.myapplication.R;
 import com.example.myapplication.models.database.App;
 import com.example.myapplication.models.database.EventDao;
 import com.example.myapplication.models.entity.Event;
-import com.example.myapplication.views.EditEventActivity;
 import com.example.myapplication.views.EditEventView;
-
-import java.util.Objects;
 
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
@@ -62,10 +58,7 @@ public class  EditEventPresenter extends MvpPresenter<EditEventView> {
 
             intent.putExtra("Event", event);
 
-
-
             new UpdateEventTask().execute(event);
-       // }
     }
 
     public void onCurrentDateChoisen(int year, int month, int day) {

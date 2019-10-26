@@ -56,7 +56,6 @@ public class NewEventPresenter extends MvpPresenter<NewEventView> {
             event.setDescription(description);
             event.setDate(rawSelectedDay);
 
-            Intent intent = new Intent();
             intent.putExtra("Event", event);
 
             new NewEventTask(intent).execute(event);

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.views;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.support.v4.app.DialogFragment;
 import android.app.DatePickerDialog;;
 import android.view.View;
 import android.widget.DatePicker;
+
+import com.example.myapplication.R;
 
 import java.util.Calendar;
 
@@ -38,7 +40,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     private onFragmentDateListener onFragmentDateListener;
 
-    //Override this function as below to set fragmentInterfacer
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -46,6 +47,4 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         onFragmentDateListener = (onFragmentDateListener) context;
         else throw new RuntimeException(context.toString() + " must implement onFragmentDateListener");
     }
-
-
 }

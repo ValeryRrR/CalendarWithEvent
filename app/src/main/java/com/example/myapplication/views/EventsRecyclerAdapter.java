@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.views;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.myapplication.Calendar.ParseDate.DateParser;
+import com.example.myapplication.R;
 import com.example.myapplication.models.entity.Event;
 
 import java.util.List;
